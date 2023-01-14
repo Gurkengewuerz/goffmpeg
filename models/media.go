@@ -45,6 +45,7 @@ type Mediafile struct {
 	seekUsingTsInput      bool
 	seekTimeInput         string
 	inputPath             string
+	additionalInputPath   string
 	inputPipe             bool
 	inputPipeReader       io.ReadCloser
 	inputPipeWriter       io.Writer
@@ -243,6 +244,10 @@ func (m *Mediafile) SetCopyTs(val bool) {
 
 func (m *Mediafile) SetInputPath(val string) {
 	m.inputPath = val
+}
+
+func (m *Mediafile) SetAdditionalInputPath(val string) {
+	m.additionalInputPath = val
 }
 
 func (m *Mediafile) SetInputPipe(val bool) {
@@ -536,6 +541,10 @@ func (m *Mediafile) InputPath() string {
 	return m.inputPath
 }
 
+func (m *Mediafile) AdditionalInputPath() string {
+	return m.additionalInputPath
+}
+
 func (m *Mediafile) InputPipe() bool {
 	return m.inputPipe
 }
@@ -697,6 +706,7 @@ func (m *Mediafile) ToStrCommand() []string {
 		"AudioChannels",
 		"AudioProfile",
 		"SkipAudio",
+		"AdditionalInputPath",
 		"CRF",
 		"QScale",
 		"Strict",
@@ -798,6 +808,13 @@ func (m *Mediafile) ObtainHardwareAcceleration() []string {
 func (m *Mediafile) ObtainInputPath() []string {
 	if m.inputPath != "" {
 		return []string{"-i", m.inputPath}
+	}
+	return nil
+}
+
+func (m *Mediafile) ObtainAdditionalInputPath() []string {
+	if m.additionalInputPath != "" {
+		return []string{"-i", m.additionalInputPath}
 	}
 	return nil
 }
