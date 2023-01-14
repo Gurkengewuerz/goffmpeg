@@ -3,8 +3,10 @@ package test
 import (
 	"io/ioutil"
 	"os/exec"
-	"sync"
-	"testing"
+    "runtime"
+    "sync"
+    "syscall"
+    "testing"
 
 	"github.com/stretchr/testify/assert"
 
@@ -195,6 +197,9 @@ func TestTranscodingProgress(t *testing.T) {
 
 func TestTranscodePipes(t *testing.T) {
 	c1 := exec.Command("cat", "/tmp/ffmpeg/mkv")
+    if runtime.GOOS == "windows" {
+        c1.SysProcAttr = &syscall.SysProcAttr{CreationFlags: 0x08000000} // CREATE_NO_WINDOW
+    }
 
 	trans := new(transcoder.Transcoder)
 

@@ -6,6 +6,7 @@ import (
     "runtime"
     "strconv"
     "strings"
+    "syscall"
 
     "github.com/Gurkengewuerz/goffmpeg/models"
 )
@@ -81,6 +82,9 @@ func TestCmd(command string, args string) (bytes.Buffer, error) {
     var out bytes.Buffer
 
     cmd := exec.Command(command, args)
+    if runtime.GOOS == "windows" {
+        cmd.SysProcAttr = &syscall.SysProcAttr{CreationFlags: 0x08000000} // CREATE_NO_WINDOW
+    }
 
     cmd.Stdout = &out
 

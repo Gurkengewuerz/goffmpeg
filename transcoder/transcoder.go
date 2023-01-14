@@ -182,6 +182,9 @@ func (t *Transcoder) Initialize(inputPath string, outputPath string) error {
 	}
 
 	cmd := exec.Command(cfg.FfprobeBin, command...)
+    if runtime.GOOS == "windows" {
+        cmd.SysProcAttr = &syscall.SysProcAttr{CreationFlags: 0x08000000} // CREATE_NO_WINDOW
+    }
 	cmd.Stdout = &outb
 	cmd.Stderr = &errb
 
