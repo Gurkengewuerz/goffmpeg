@@ -1,21 +1,19 @@
 package transcoder
 
 import (
-	"bufio"
-	"bytes"
-	"encoding/json"
-	"errors"
-	"fmt"
-	"github.com/Gurkengewuerz/goffmpeg/ffmpeg"
-	"github.com/Gurkengewuerz/goffmpeg/models"
-	"github.com/Gurkengewuerz/goffmpeg/utils"
-	"io"
-	"os/exec"
-	"regexp"
-	"runtime"
-	"strconv"
-	"strings"
-	"syscall"
+    "bufio"
+    "bytes"
+    "encoding/json"
+    "errors"
+    "fmt"
+    "github.com/Gurkengewuerz/goffmpeg/ffmpeg"
+    "github.com/Gurkengewuerz/goffmpeg/models"
+    "github.com/Gurkengewuerz/goffmpeg/utils"
+    "io"
+    "os/exec"
+    "regexp"
+    "strconv"
+    "strings"
 )
 
 // Transcoder Main struct
@@ -181,10 +179,7 @@ func (t *Transcoder) Initialize(inputPath string, outputPath string) error {
 		command = append([]string{"-protocol_whitelist", strings.Join(t.whiteListProtocols, ",")}, command...)
 	}
 
-	cmd := exec.Command(cfg.FfprobeBin, command...)
-    if runtime.GOOS == "windows" {
-        cmd.SysProcAttr = &syscall.SysProcAttr{CreationFlags: 0x08000000} // CREATE_NO_WINDOW
-    }
+	cmd := utils.Command(cfg.FfprobeBin, command...)
 	cmd.Stdout = &outb
 	cmd.Stderr = &errb
 
@@ -220,10 +215,7 @@ func (t *Transcoder) Run(progress bool) <-chan error {
 		command = append([]string{"-nostats", "-loglevel", "0"}, command...)
 	}
 
-	proc := exec.Command(t.configuration.FfmpegBin, command...)
-	if runtime.GOOS == "windows" {
-		proc.SysProcAttr = &syscall.SysProcAttr{CreationFlags: 0x08000000} // CREATE_NO_WINDOW
-	}
+	proc := utils.Command(t.configuration.FfmpegBin, command...)
 	if progress {
 		errStream, err := proc.StderrPipe()
 		if err != nil {

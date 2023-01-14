@@ -1,16 +1,14 @@
 package test
 
 import (
-	"io/ioutil"
-	"os/exec"
-    "runtime"
+    "github.com/Gurkengewuerz/goffmpeg/utils"
+    "io/ioutil"
     "sync"
-    "syscall"
     "testing"
 
-	"github.com/stretchr/testify/assert"
+    "github.com/stretchr/testify/assert"
 
-	"github.com/Gurkengewuerz/goffmpeg/transcoder"
+    "github.com/Gurkengewuerz/goffmpeg/transcoder"
 )
 
 func TestInputNotFound(t *testing.T) {
@@ -196,10 +194,7 @@ func TestTranscodingProgress(t *testing.T) {
 }
 
 func TestTranscodePipes(t *testing.T) {
-	c1 := exec.Command("cat", "/tmp/ffmpeg/mkv")
-    if runtime.GOOS == "windows" {
-        c1.SysProcAttr = &syscall.SysProcAttr{CreationFlags: 0x08000000} // CREATE_NO_WINDOW
-    }
+	c1 := utils.Command("cat", "/tmp/ffmpeg/mkv")
 
 	trans := new(transcoder.Transcoder)
 
