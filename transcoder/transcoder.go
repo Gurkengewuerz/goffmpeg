@@ -6,15 +6,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
-	"os/exec"
-	"regexp"
-	"strconv"
-	"strings"
-
 	"github.com/Gurkengewuerz/goffmpeg/ffmpeg"
 	"github.com/Gurkengewuerz/goffmpeg/models"
 	"github.com/Gurkengewuerz/goffmpeg/utils"
+	"io"
+	"os/exec"
+	"regexp"
+	"runtime"
+	"strconv"
+	"strings"
+	"syscall"
 )
 
 // Transcoder Main struct
@@ -217,6 +218,9 @@ func (t *Transcoder) Run(progress bool) <-chan error {
 	}
 
 	proc := exec.Command(t.configuration.FfmpegBin, command...)
+	if runtime.GOOS == "windows" {
+		proc.SysProcAttr = &syscall.SysProcAttr{CreationFlags: 0x08000000} // CREATE_NO_WINDOW
+	}
 	if progress {
 		errStream, err := proc.StderrPipe()
 		if err != nil {
