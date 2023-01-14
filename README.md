@@ -20,14 +20,14 @@ New implementation with an easy-to-use API and interfaces to extend the transcod
 # Getting started
 ## How to transcode a media file
 ```shell
-go get github.com/xfrr/goffmpeg
+go get github.com/Gurkengewuerz/goffmpeg
 ```
 
 ```go
 package main
 
 import (
-    "github.com/xfrr/goffmpeg/transcoder"
+    "github.com/Gurkengewuerz/goffmpeg/transcoder"
 )
 
 var inputPath = "/data/testmov"

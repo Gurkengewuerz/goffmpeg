@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/xfrr/goffmpeg/utils"
+	"github.com/Gurkengewuerz/goffmpeg/utils"
 )
 
 // Configuration ...
@@ -31,8 +31,13 @@ func Configure() (Configuration, error) {
 		return Configuration{}, err
 	}
 
-	ffmpeg := strings.Replace(strings.Split(outFFmpeg.String(), "\n")[0], utils.LineSeparator(), "", -1)
-	ffprobe := strings.Replace(strings.Split(outProbe.String(), "\n")[0], utils.LineSeparator(), "", -1)
+	sep := "\n"
+	if strings.Contains(outFFmpeg.String(), "\r\n") {
+		sep = "\r\n"
+	}
+
+	ffmpeg := strings.Replace(strings.Split(outFFmpeg.String(), sep)[0], utils.LineSeparator(), "", -1)
+	ffprobe := strings.Replace(strings.Split(outProbe.String(), sep)[0], utils.LineSeparator(), "", -1)
 
 	cnf := Configuration{ffmpeg, ffprobe}
 	return cnf, nil

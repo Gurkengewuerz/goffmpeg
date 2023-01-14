@@ -71,6 +71,7 @@ type Mediafile struct {
 	metadata              Metadata
 	videoFilter           string
 	audioFilter           string
+	filterComplex         string
 	skipVideo             bool
 	skipAudio             bool
 	compressionLevel      int
@@ -91,6 +92,10 @@ func (m *Mediafile) SetAudioFilter(v string) {
 
 func (m *Mediafile) SetVideoFilter(v string) {
 	m.videoFilter = v
+}
+
+func (m *Mediafile) SetFilterComplex(v string) {
+	m.filterComplex = v
 }
 
 // Deprecated: Use SetVideoFilter instead.
@@ -381,6 +386,10 @@ func (m *Mediafile) VideoFilter() string {
 
 func (m *Mediafile) AudioFilter() string {
 	return m.audioFilter
+}
+
+func (m *Mediafile) FilterComplex() string {
+	return m.filterComplex
 }
 
 func (m *Mediafile) Aspect() string {
@@ -715,6 +724,7 @@ func (m *Mediafile) ToStrCommand() []string {
 		"HlsSegmentFilename",
 		"AudioFilter",
 		"VideoFilter",
+		"ComplexFilter",
 		"HttpMethod",
 		"HttpKeepAlive",
 		"CompressionLevel",
@@ -750,6 +760,13 @@ func (m *Mediafile) ObtainAudioFilter() []string {
 func (m *Mediafile) ObtainVideoFilter() []string {
 	if m.videoFilter != "" {
 		return []string{"-vf", m.videoFilter}
+	}
+	return nil
+}
+
+func (m *Mediafile) ObtainComplexFilter() []string {
+	if m.filterComplex != "" {
+		return []string{"-filter_complex", m.filterComplex}
 	}
 	return nil
 }
@@ -1170,10 +1187,10 @@ func (m *Mediafile) ObtainCompressionLevel() []string {
 func (m *Mediafile) ObtainMapMetadata() []string {
 	if m.mapMetadata != "" {
 		return []string{"-map_metadata", m.mapMetadata}
-  }
-  return nil
+	}
+	return nil
 }
-    
+
 func (m *Mediafile) ObtainEncryptionKey() []string {
 	if m.encryptionKey != "" {
 		return []string{"-hls_key_info_file", m.encryptionKey}

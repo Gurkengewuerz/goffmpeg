@@ -12,18 +12,18 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/xfrr/goffmpeg/ffmpeg"
-	"github.com/xfrr/goffmpeg/models"
-	"github.com/xfrr/goffmpeg/utils"
+	"github.com/Gurkengewuerz/goffmpeg/ffmpeg"
+	"github.com/Gurkengewuerz/goffmpeg/models"
+	"github.com/Gurkengewuerz/goffmpeg/utils"
 )
 
 // Transcoder Main struct
 type Transcoder struct {
-	stdErrPipe    io.ReadCloser
-	stdStdinPipe  io.WriteCloser
-	process       *exec.Cmd
-	mediafile     *models.Mediafile
-	configuration ffmpeg.Configuration
+	stdErrPipe         io.ReadCloser
+	stdStdinPipe       io.WriteCloser
+	process            *exec.Cmd
+	mediafile          *models.Mediafile
+	configuration      ffmpeg.Configuration
 	whiteListProtocols []string
 }
 
